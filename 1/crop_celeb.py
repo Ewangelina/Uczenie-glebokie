@@ -25,10 +25,10 @@ def crop(box, image):
 file = "./face.xml"
 detector = Cascade(file)
 
-f = open(".\\data\\celebs\\Anno\\glasses2.csv")
+f = open(".\\data\\celebs\\Anno\\glasses3.csv")
 last_student = -1
 student_output = open(".\\data\\celebs\\Anno\\glasses.csv") #file not used
-group = "train\\"
+group = "val\\" #train
 cecha = "glasses"
 
 for task_line in f:
@@ -38,6 +38,8 @@ for task_line in f:
         group = "val\\"
     if file == "182638.jpg":
         group = "test\\"
+    if file == "025133.jpg":
+        group = "train\\"
         
     glasses = int(task[1])
     if glasses == 1:

@@ -54,24 +54,6 @@ plt.ion()   # interactive mode
 ######################################################################
 # Load Data
 # ---------
-#
-# We will use torchvision and torch.utils.data packages for loading the
-# data.
-#
-# The problem we're going to solve today is to train a model to classify
-# **ants** and **bees**. We have about 120 training images each for ants and bees.
-# There are 75 validation images for each class. Usually, this is a very
-# small dataset to generalize upon, if trained from scratch. Since we
-# are using transfer learning, we should be able to generalize reasonably
-# well.
-#
-# This dataset is a very small subset of imagenet.
-#
-# .. Note ::
-#    Download the data from
-#    `here <https://download.pytorch.org/tutorial/hymenoptera_data.zip>`_
-#    and extract it to the current directory.
-
 # Data augmentation and normalization for training
 # Just normalization for validation
 data_transforms = {
@@ -89,9 +71,7 @@ data_transforms = {
     ]),
 }
 print("1")
-data_dir = 'data/celebs/images_sorted'
-#!!!!!!!!!!!!!!!!
-data_dir = '.\\testcelebs'
+data_dir = '.\\data\\celebs\\images_sorted'
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['train', 'val']}
@@ -320,14 +300,6 @@ def visualize_model_predictions(model,img_path):
         imshow(img.cpu().data[0])
         
         model.train(mode=was_training)
-
-######################################################################
-#
-
-visualize_model_predictions(
-    model_ft,
-    img_path='data/hymenoptera_data/val/bees/72100438_73de9f17af.jpg'
-)
 
 plt.ioff()
 plt.show()
