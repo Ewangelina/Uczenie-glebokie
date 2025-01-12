@@ -28,6 +28,7 @@ while 1:
     output.write(out)
     output.close()
     output = open('pairs.csv', 'a', encoding="utf-8")
+    string = correct_string
     
     
 
