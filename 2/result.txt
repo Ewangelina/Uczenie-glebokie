@@ -1,1 +1,0 @@
-Epoch 9504 Lowest loss: 0.0003

@@ -41,6 +41,9 @@ def divide_data():
     pickle.dump(X_test, open(".\\data\\X_test.sav", 'wb'))
     pickle.dump(y_test, open(".\\data\\y_test.sav", 'wb'))
 
+    print(len(X_train))
+    print(len(X_test))
+
     return X_train, y_train, X_test, y_test
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -83,7 +86,6 @@ for epoch in range(n_epochs):
     for X_batch, y_batch in loader:
         y_pred = model(X_batch)        
         loss = loss_fn(y_pred, y_batch)
-        print(y_pred.detach().numpy()[0][0])
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
