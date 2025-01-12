@@ -1,38 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Transfer Learning for Computer Vision Tutorial
-==============================================
-**Author**: `Sasank Chilamkurthy <https://chsasank.github.io>`_
-
-In this tutorial, you will learn how to train a convolutional neural network for
-image classification using transfer learning. You can read more about the transfer
-learning at `cs231n notes <https://cs231n.github.io/transfer-learning/>`__
-
-Quoting these notes,
-
-    In practice, very few people train an entire Convolutional Network
-    from scratch (with random initialization), because it is relatively
-    rare to have a dataset of sufficient size. Instead, it is common to
-    pretrain a ConvNet on a very large dataset (e.g. ImageNet, which
-    contains 1.2 million images with 1000 categories), and then use the
-    ConvNet either as an initialization or a fixed feature extractor for
-    the task of interest.
-
-These two major transfer learning scenarios look as follows:
-
--  **Finetuning the ConvNet**: Instead of random initialization, we
-   initialize the network with a pretrained network, like the one that is
-   trained on imagenet 1000 dataset. Rest of the training looks as
-   usual.
--  **ConvNet as fixed feature extractor**: Here, we will freeze the weights
-   for all of the network except that of the final fully connected
-   layer. This last fully connected layer is replaced with a new one
-   with random weights and only this layer is trained.
-
-"""
-# License: BSD
-# Author: Sasank Chilamkurthy
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -271,8 +236,6 @@ pickle.dump(model_ft, open(file_path, 'wb'))
 
 visualize_model(model_ft)
 
-#$$$$$$$$$$$$$$$$
-
 ######################################################################
 # Inference on custom images
 # --------------------------
@@ -303,14 +266,3 @@ def visualize_model_predictions(model,img_path):
 
 plt.ioff()
 plt.show()
-
-
-######################################################################
-# Further Learning
-# -----------------
-#
-# If you would like to learn more about the applications of transfer learning,
-# checkout our `Quantized Transfer Learning for Computer Vision Tutorial <https://pytorch.org/tutorials/intermediate/quantized_transfer_learning_tutorial.html>`_.
-#
-#
-

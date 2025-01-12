@@ -1,0 +1,142 @@
+Python 3.12.7 (tags/v3.12.7:0b05ead, Oct  1 2024, 03:06:41) [MSC v.1941 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license()" for more information.
+
+== RESTART: D:\AAStudiaInformatyka\12\Uczenie-glebokie\1\transfer_learning.py ==
+1
+2
+3
+4
+5
+6
+Epoch 0/24
+----------
+train Loss: 0.0964 Acc: 0.9729
+val Loss: 0.0169 Acc: 0.9954
+
+Epoch 1/24
+----------
+train Loss: 0.0628 Acc: 0.9827
+val Loss: 0.0312 Acc: 0.9941
+
+Epoch 2/24
+----------
+train Loss: 0.0548 Acc: 0.9854
+val Loss: 0.0178 Acc: 0.9950
+
+Epoch 3/24
+----------
+train Loss: 0.0548 Acc: 0.9848
+val Loss: 0.0158 Acc: 0.9956
+
+Epoch 4/24
+----------
+train Loss: 0.0491 Acc: 0.9863
+val Loss: 0.0161 Acc: 0.9956
+
+Epoch 5/24
+----------
+train Loss: 0.0487 Acc: 0.9862
+val Loss: 0.0185 Acc: 0.9949
+
+Epoch 6/24
+----------
+train Loss: 0.0463 Acc: 0.9872
+val Loss: 0.0155 Acc: 0.9960
+
+Epoch 7/24
+----------
+train Loss: 0.0399 Acc: 0.9890
+val Loss: 0.0159 Acc: 0.9957
+
+Epoch 8/24
+----------
+train Loss: 0.0354 Acc: 0.9899
+val Loss: 0.0169 Acc: 0.9953
+
+Epoch 9/24
+----------
+train Loss: 0.0375 Acc: 0.9896
+val Loss: 0.0175 Acc: 0.9949
+
+Epoch 10/24
+----------
+train Loss: 0.0370 Acc: 0.9901
+val Loss: 0.0159 Acc: 0.9961
+
+Epoch 11/24
+----------
+train Loss: 0.0328 Acc: 0.9911
+val Loss: 0.0152 Acc: 0.9957
+
+Epoch 12/24
+----------
+train Loss: 0.0351 Acc: 0.9901
+val Loss: 0.0145 Acc: 0.9964
+
+Epoch 13/24
+----------
+train Loss: 0.0328 Acc: 0.9903
+val Loss: 0.0148 Acc: 0.9962
+
+Epoch 14/24
+----------
+train Loss: 0.0358 Acc: 0.9901
+val Loss: 0.0148 Acc: 0.9961
+
+Epoch 15/24
+----------
+train Loss: 0.0342 Acc: 0.9905
+val Loss: 0.0160 Acc: 0.9957
+
+Epoch 16/24
+----------
+train Loss: 0.0350 Acc: 0.9900
+val Loss: 0.0154 Acc: 0.9961
+
+Epoch 17/24
+----------
+train Loss: 0.0317 Acc: 0.9914
+val Loss: 0.0151 Acc: 0.9962
+
+Epoch 18/24
+----------
+train Loss: 0.0334 Acc: 0.9908
+val Loss: 0.0156 Acc: 0.9959
+
+Epoch 19/24
+----------
+train Loss: 0.0334 Acc: 0.9907
+val Loss: 0.0169 Acc: 0.9956
+
+Epoch 20/24
+----------
+train Loss: 0.0328 Acc: 0.9902
+val Loss: 0.0168 Acc: 0.9953
+
+Epoch 21/24
+----------
+train Loss: 0.0339 Acc: 0.9904
+val Loss: 0.0161 Acc: 0.9960
+
+Epoch 22/24
+----------
+train Loss: 0.0335 Acc: 0.9906
+val Loss: 0.0156 Acc: 0.9960
+
+Epoch 23/24
+----------
+train Loss: 0.0340 Acc: 0.9900
+val Loss: 0.0160 Acc: 0.9959
+
+Epoch 24/24
+----------
+train Loss: 0.0311 Acc: 0.9918
+val Loss: 0.0159 Acc: 0.9959
+
+Training complete in 539m 15s
+Best val Acc: 0.996403
+
+
+
+test Loss: 0.0140 Acc: 0.9965
+wider Loss: 0.0331 Acc: 0.9904
