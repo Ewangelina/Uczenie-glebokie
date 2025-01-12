@@ -60,17 +60,16 @@ data_transforms = {
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 }
-print("1")
+
 data_dir = '.\\data\\celebs\\images_sorted'
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['test', 'wider']}
-dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4,
+dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=1,
                                              shuffle=True)
               for x in ['test', 'wider']}
 dataset_sizes = {x: len(image_datasets[x]) for x in ['test', 'wider']}
 class_names = image_datasets['test'].classes
-print("2")
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 ######################################################################
@@ -79,6 +78,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def imshow(inp, title=None):
     """Display image for Tensor."""
+    inp = inp.cpu()
     inp = inp.numpy().transpose((1, 2, 0))
     mean = np.array([0.485, 0.456, 0.406])
     std = np.array([0.229, 0.224, 0.225])
@@ -87,17 +87,17 @@ def imshow(inp, title=None):
     plt.imshow(inp)
     if title is not None:
         plt.title(title)
-    plt.pause(0.001)  # pause a bit so that plots are updated
+    plt.pause(0.001)
     
-print("3")
+
 # Get a batch of test data
 inputs, classes = next(iter(dataloaders['test']))
-print("4")
+
 # Make a grid from batch
 out = torchvision.utils.make_grid(inputs)
 
 imshow(out, title=[class_names[x] for x in classes])
-print("5")
+
 
 ######################################################################
 # Test
@@ -107,6 +107,8 @@ def test_model(model, criterion, optimizer):
     for phase in ['test', 'wider']:
         running_loss = 0.0
         running_corrects = 0
+
+        accuracy_matrix = [[0, 0], [0, 0]]
 
         # Iterate over data.
         for inputs, labels in dataloaders[phase]:
@@ -122,6 +124,15 @@ def test_model(model, criterion, optimizer):
                 _, preds = torch.max(outputs, 1)
                 loss = criterion(outputs, labels)
 
+                i1 = int(labels[0].item())
+                i2 = int(preds[0].item())
+                accuracy_matrix[i1][i2] = 1 + accuracy_matrix[i1][i2]
+
+                #if not i1 == i2 and i2 == 0:
+                #    out = torchvision.utils.make_grid(inputs)
+                #    imshow(out, class_names[i2])
+                #    exit(0)
+
             # statistics
             running_loss += loss.item() * inputs.size(0)
             running_corrects += torch.sum(preds == labels.data)
@@ -130,6 +141,8 @@ def test_model(model, criterion, optimizer):
         epoch_acc = running_corrects.double() / dataset_sizes[phase]
 
         print(f'{phase} Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}')
+        print(accuracy_matrix)
+        
 
 model = pickle.load(open(".\\models_saved\\last.sav", 'rb'))
 criterion = nn.CrossEntropyLoss()

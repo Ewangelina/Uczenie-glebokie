@@ -35,7 +35,7 @@ data_transforms = {
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ]),
 }
-print("1")
+
 data_dir = '.\\data\\celebs\\images_sorted'
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
@@ -45,7 +45,6 @@ dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=4,
               for x in ['train', 'val']}
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 class_names = image_datasets['train'].classes
-print("2")
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 ######################################################################
@@ -65,16 +64,15 @@ def imshow(inp, title=None):
     if title is not None:
         plt.title(title)
     plt.pause(0.001)  # pause a bit so that plots are updated
-print("3")
 
 # Get a batch of training data
 inputs, classes = next(iter(dataloaders['train']))
-print("4")
+
 # Make a grid from batch
 out = torchvision.utils.make_grid(inputs)
 
 imshow(out, title=[class_names[x] for x in classes])
-print("5")
+
 
 ######################################################################
 # Training the model
@@ -204,9 +202,7 @@ def visualize_model(model, num_images=6):
 model_ft = models.resnet18(weights='IMAGENET1K_V1')
 num_ftrs = model_ft.fc.in_features
 # Here the size of each output sample is set to 2.
-# Alternatively, it can be generalized to ``nn.Linear(num_ftrs, len(class_names))``.
-model_ft.fc = nn.Linear(num_ftrs, 2)
-print("6")
+model_ft.fc = nn.Linear(num_ftrs, 2) # 2 -> len(class_names)
 model_ft = model_ft.to(device)
 
 criterion = nn.CrossEntropyLoss()

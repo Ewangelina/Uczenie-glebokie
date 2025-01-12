@@ -140,3 +140,8 @@ Best val Acc: 0.996403
 
 test Loss: 0.0140 Acc: 0.9965
 wider Loss: 0.0331 Acc: 0.9904
+
+test Loss: 0.0140 Acc: 0.9965
+[[969, 44], [20, 17428]]
+wider Loss: 0.0331 Acc: 0.9904
+[[22, 1], [0, 81]]
