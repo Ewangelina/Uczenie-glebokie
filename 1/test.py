@@ -58,16 +58,6 @@ def load_widerface_images(root_dir, annotations_file, num_images=100):
     return images, annotations
 
 def test_on_widerface(model, csv_file, root_dir, transform, device='cuda'):
-    """
-    Test the model on WIDERFace cropped and annotated dataset.
-
-    Args:
-        model (nn.Module): Trained model.
-        csv_file (str): Path to the CSV file with annotations.
-        root_dir (str): Directory containing cropped face images.
-        transform (callable): Transformation to apply to images.
-        device (str): Device to run the model on.
-    """
     # Load annotations
     annotations = pd.read_csv(csv_file)
     model.to(device)
