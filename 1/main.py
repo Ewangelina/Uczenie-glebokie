@@ -4,6 +4,7 @@ from utils.dataset import get_dataloaders
 from train import train_model
 from test import test_model, test_on_widerface
 from utils.transforms import get_transforms
+import pandas as pd
 
 if __name__ == "__main__":
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -26,9 +27,15 @@ if __name__ == "__main__":
     test_model(model, val_loader, device=device)
     print("Testing on CelebA complete.")
 
-    # Test the model on WIDERFace
+    # Test the model on WIDERFace cropped faces
     print("Starting testing on WIDERFace...")
-    widerface_root = './data/WIDER/WIDER_train/images'
-    annotations_file = './data/WIDER/wider_face_split/wider_face_train_bbx_gt.txt'
-    results = test_on_widerface(model, widerface_root, annotations_file, get_transforms(), device=device)
-    print("Testing on WIDERFace complete.")
+    csv_file = './data/annotations.csv'
+    root_dir = './data/WIDER/selected_faces'
+    results, accuracy = test_on_widerface(model, csv_file, root_dir, get_transforms(), device=device)
+    print(f"Testing on WIDERFace complete. Accuracy: {accuracy:.2f}%")
+
+    # Save predictions to a CSV file
+    results_df = pd.DataFrame(results, columns=['file', 'predicted_label'])
+    results_df.to_csv('./data/widerface_predictions.csv', index=False)
+    print("Predictions saved to widerface_predictions.csv")
+
