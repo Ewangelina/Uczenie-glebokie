@@ -59,15 +59,15 @@ class my_LSTM(nn.Module):
     def __init__(self, input_size, hidden_size, num_layers):
         super().__init__()
         self.hidden_size = hidden_size
-        self.lstm = nn.LSTM(input_size=99, hidden_size=50, num_layers=1, batch_first=True)
-        self.linear = nn.Linear(50, 99)
+        self.lstm = nn.LSTM(input_size=99, hidden_size=99, num_layers=1, batch_first=True)
+        self.linear = nn.Linear(99, 99)
     def forward(self, x):
         x, _ = self.lstm(x)
         x = self.linear(x)
         return x
 
-X_train, y_train, X_test, y_test = divide_data()
-print("0")
+#X_train, y_train, X_test, y_test = divide_data()
+#print("0")
 X_train = pickle.load(open(".\\data\\X_train.sav", 'rb'))
 y_train = pickle.load(open(".\\data\\X_train.sav", 'rb'))
 X_test = pickle.load(open(".\\data\\X_train.sav", 'rb'))
