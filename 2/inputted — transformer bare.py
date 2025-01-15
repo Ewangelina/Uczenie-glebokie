@@ -30,7 +30,7 @@ class my_LSTM(nn.Module):
         x = self.linear(x)
         return x, memory
 
-token = "o nauka o grzeczności — podkomorzego uwagi polityczne nad modami — początek sporu o kusego i sokoła"
+token = "mała małgosia miała mały młyn i małego kotka i małego braciszka i mały samochodzik i małą piłeczkę "
 encoding = med.encode(token)
 array = [encoding, encoding]
 model = pickle.load(open(".\\best_model_2.sav", 'rb'))
