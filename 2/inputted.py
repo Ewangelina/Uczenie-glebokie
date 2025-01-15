@@ -29,12 +29,13 @@ class my_LSTM(nn.Module):
         x = self.linear(x)
         return x
 
-token = "o nauka o grzeczności — podkomorzego uwagi polityczne nad modami — początek sporu o kusego i sokoła"
+token = "mała małgosia miała mały młyn i małego kotka i małego braciszka i mały samochodzik i małą piłeczkę "
 model = pickle.load(open(".\\best_model_hs_99.sav", 'rb'))
 
 array = [med.encode(token), med.encode(token)]
 y_pred = model(torch.tensor(array).to(torch.float32))
 res = y_pred.detach().numpy()
+print(res)
 for el in res:
     print(med.decode(el))
     
