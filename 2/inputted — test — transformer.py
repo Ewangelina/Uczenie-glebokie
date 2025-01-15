@@ -59,7 +59,7 @@ for line in file:
         for j in range(2):
             accuracy = 0
             for i in range(99):
-                if round(res[j][i]) == out_arr[j][i]:
+                if int(res[j][i]) == out_arr[j][i]:
                     accuracy = accuracy + 1
             if round(res[j][98]) == out_arr[j][98]:
                 acc_end.append(1)
