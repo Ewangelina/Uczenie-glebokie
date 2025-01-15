@@ -30,7 +30,7 @@ class my_LSTM(nn.Module):
         return x
 
 token = "o nauka o grzeczności — podkomorzego uwagi polityczne nad modami — początek sporu o kusego i sokoła"
-model = pickle.load(open(".\\best_model.sav", 'rb'))
+model = pickle.load(open(".\\best_model_hs_99.sav", 'rb'))
 
 array = [med.encode(token), med.encode(token)]
 y_pred = model(torch.tensor(array).to(torch.float32))
