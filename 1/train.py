@@ -20,7 +20,7 @@ def train_model(model, train_loader, val_loader, epochs=10, patience=3, device='
     for epoch in range(epochs):
         model.train()
         train_loss = 0
-        for batch_idx, (images, labels) in enumerate(train_loader):
+        for batch_idx, (images, labels, img_paths) in enumerate(train_loader):
             labels = labels.to(device).float().unsqueeze(1)  # No need for a dictionary lookup
             images = images.to(device)
             optimizer.zero_grad()
@@ -37,7 +37,7 @@ def train_model(model, train_loader, val_loader, epochs=10, patience=3, device='
         val_loss = 0
         model.eval()
         with torch.no_grad():
-            for images, labels in val_loader:
+            for images, labels, img_paths in val_loader:
                 images, labels = images.to(device), labels.to(device).float().unsqueeze(1)
                 outputs = model(images)
                 val_loss += criterion(outputs, labels).item()

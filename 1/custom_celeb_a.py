@@ -46,12 +46,12 @@ class CustomCelebA(Dataset):
         # Load image
         img_path = self.image_paths[idx]
         image = Image.open(img_path).convert("RGB")
-
+    
         # Apply transformations if provided
         if self.transform:
             image = self.transform(image)
-
+    
         # Retrieve label
         label = 1 if self.labels[idx] == 1 else 0  # Convert label to binary
-
-        return image, label
+    
+        return image, label, img_path  # Include the image path

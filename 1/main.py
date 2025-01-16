@@ -12,6 +12,8 @@ if __name__ == "__main__":
 
     # Load model
     model = CustomCNN()
+    model.load_state_dict(torch.load("best_custom_cnn.pth", map_location=device))
+    model.to(device)
 
     # Get dataloaders
     print("Loading data...")
@@ -29,8 +31,8 @@ if __name__ == "__main__":
 
     # Test the model on WIDERFace cropped faces
     print("Starting testing on WIDERFace...")
-    csv_file = './data/annotations.csv'
-    root_dir = './data/WIDER/selected_faces'
+    csv_file = 'D:/1111/studia/2sem/Uczenie-glebokie/1/data/annotations.csv'
+    root_dir = 'D:/1111/studia/2sem/Uczenie-glebokie/1/data/WIDER/selected_faces'
     results, accuracy = test_on_widerface(model, csv_file, root_dir, get_transforms(), device=device)
     print(f"Testing on WIDERFace complete. Accuracy: {accuracy:.2f}%")
 

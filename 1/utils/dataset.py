@@ -5,10 +5,10 @@ from custom_celeb_a import CustomCelebA
 from utils.transforms import get_transforms
 
 def custom_collate(batch):
-    images, labels = zip(*batch)
+    images, labels, img_path = zip(*batch)
     images = torch.stack(images)
     labels = torch.tensor(labels)
-    return images, labels
+    return images, labels, img_path
 
 
 def get_dataloaders(batch_size=64):
