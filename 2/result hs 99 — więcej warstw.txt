@@ -1,0 +1,8 @@
+Epoch 0: train RMSE 8.8816, test RMSE 8.8816
+Epoch 1: train RMSE 8.8829, test RMSE 8.8829
+Epoch 2: train RMSE 8.8804, test RMSE 8.8804
+Epoch 3: train RMSE 8.8813, test RMSE 8.8813
+Epoch 4: train RMSE 8.8807, test RMSE 8.8807
+Epoch 5: train RMSE 8.8809, test RMSE 8.8809
+Epoch 6: train RMSE 8.8798, test RMSE 8.8798
+Epoch 7: train RMSE 8.8833, test RMSE 8.8833
