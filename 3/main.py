@@ -4,8 +4,8 @@ from torch_geometric.loader import DataLoader
 from sklearn.model_selection import train_test_split
 from torch_geometric.transforms import BaseTransform
 from train import train_bace, train_qm9
-from test import test_bace
-from model import GCNLinearClassifierModel, GCNNonlinearClassifierModel, TransformerLinearClassifierModel, TransformerNonlinearClassifierModel, GCNLinearModel, GCNNonlinearModel, TransformerLinearModel, TransformerNonlinearModel
+from test import test_bace, test_qm9
+from model import GCNLinearClassifierModel, GCNNonlinearClassifierModel, TransformerLinearClassifierModel, TransformerNonlinearClassifierModel, GCNLinearRegressionModel, GCNNonlinearRegressionModel, TransformerLinearRegressionModel, TransformerNonlinearRegressionModel
 import numpy as np
 import random
 
@@ -78,14 +78,13 @@ if __name__ == "__main__":
 
     # Define model parameters
     hidden_dim = 64
-    embedding_dim = 2
-    output_dim = 19  # For regression tasks (QM9)
+    embedding_dim = 128
+    output_dim = 1
     classifier_hidden_dim = 32  # For nonlinear classifier
 
     # Load datasets
     bace_train_loader, bace_val_loader, bace_test_loader = load_bace_dataset()
     bace_input_dim = 9
-
 
     # Train models for BACE (Binary Classification)
     gcn_linear_classifier_model = GCNLinearClassifierModel(bace_input_dim, hidden_dim, embedding_dim)
@@ -110,15 +109,23 @@ if __name__ == "__main__":
     # input_dim = qm9_dataset.num_features
 
     # # Train models for QM9 (Regression)
-    # gcn_linear_model = GCNLinearModel(input_dim, hidden_dim, embedding_dim, output_dim)
+    # print("Training GCNLinearRegressionModel...")
+    # gcn_linear_model = GCNLinearRegressionModel(input_dim, hidden_dim, embedding_dim, output_dim)
     # train_qm9(gcn_linear_model, qm9_train_loader, qm9_val_loader, device)
+    # test_qm9(gcn_linear_model, qm9_test_loader, device)
 
-    # gcn_nonlinear_model = GCNNonlinearModel(input_dim, hidden_dim, embedding_dim, classifier_hidden_dim, output_dim)
+    # print("Training GCNNonlinearRegressionModel...")
+    # gcn_nonlinear_model = GCNNonlinearRegressionModel(input_dim, hidden_dim, embedding_dim, classifier_hidden_dim, output_dim)
     # train_qm9(gcn_nonlinear_model, qm9_train_loader, qm9_val_loader, device)
+    # test_qm9(gcn_nonlinear_model, qm9_test_loader, device)
 
-    # transformer_linear_model = TransformerLinearModel(input_dim, hidden_dim, embedding_dim, output_dim)
+    # print("Training TransformerLinearRegressionModel...")
+    # transformer_linear_model = TransformerLinearRegressionModel(input_dim, hidden_dim, embedding_dim, output_dim)
     # train_qm9(transformer_linear_model, qm9_train_loader, qm9_val_loader, device)
+    # test_qm9(transformer_linear_model, qm9_test_loader, device)
 
-    # transformer_nonlinear_model = TransformerNonlinearModel(input_dim, hidden_dim, embedding_dim, classifier_hidden_dim, output_dim)
+    # print("Training TransformerNonlinearRegressionModel...")
+    # transformer_nonlinear_model = TransformerNonlinearRegressionModel(input_dim, hidden_dim, embedding_dim, classifier_hidden_dim, output_dim)
     # train_qm9(transformer_nonlinear_model, qm9_train_loader, qm9_val_loader, device)
+    # test_qm9(transformer_nonlinear_model, qm9_test_loader, device)
 

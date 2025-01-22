@@ -81,46 +81,65 @@ class NonlinearClassifier(Module):
     def forward(self, x):
         return torch.sigmoid(self.network(x))
 
-# Combined Models
-class GCNLinearModel(Module):
-    def __init__(self, input_dim, hidden_dim, embedding_dim, output_dim):
-        super(GCNLinearModel, self).__init__()
+# Combined Regression Models
+class GCNLinearRegressionModel(Module):
+    def __init__(self, input_dim, hidden_dim, embedding_dim, output_dim=1):
+        super(GCNLinearRegressionModel, self).__init__()
         self.gcn = GCNModel(input_dim, hidden_dim, embedding_dim)
-        self.predictor = LinearPredictor(embedding_dim, output_dim)
+        self.predictor = LinearPredictor(embedding_dim, output_dim)  # output_dim should be 1
+        self.embedding_size = embedding_dim 
 
     def forward(self, x, edge_index, batch):
         x = self.gcn(x, edge_index, batch)
         return self.predictor(x)
 
-class GCNNonlinearModel(Module):
-    def __init__(self, input_dim, hidden_dim, embedding_dim, predictor_hidden_dim, output_dim):
-        super(GCNNonlinearModel, self).__init__()
+    def get_embeddings(self, x, edge_index, batch):
+        return self.gcn(x, edge_index, batch)
+
+
+class GCNNonlinearRegressionModel(Module):
+    def __init__(self, input_dim, hidden_dim, embedding_dim, predictor_hidden_dim, output_dim=1):
+        super(GCNNonlinearRegressionModel, self).__init__()
         self.gcn = GCNModel(input_dim, hidden_dim, embedding_dim)
-        self.predictor = NonlinearPredictor(embedding_dim, predictor_hidden_dim, output_dim)
+        self.predictor = NonlinearPredictor(embedding_dim, predictor_hidden_dim, output_dim)  # output_dim=1
+        self.embedding_size = embedding_dim 
 
     def forward(self, x, edge_index, batch):
         x = self.gcn(x, edge_index, batch)
         return self.predictor(x)
 
-class TransformerLinearModel(Module):
-    def __init__(self, input_dim, hidden_dim, embedding_dim, output_dim):
-        super(TransformerLinearModel, self).__init__()
+    def get_embeddings(self, x, edge_index, batch):
+        return self.gcn(x, edge_index, batch)
+
+
+class TransformerLinearRegressionModel(Module):
+    def __init__(self, input_dim, hidden_dim, embedding_dim, output_dim=1):
+        super(TransformerLinearRegressionModel, self).__init__()
         self.transformer = TransformerModel(input_dim, hidden_dim, embedding_dim)
         self.predictor = LinearPredictor(embedding_dim, output_dim)
+        self.embedding_size = embedding_dim 
 
     def forward(self, x, edge_index, batch):
         x = self.transformer(x, edge_index, batch)
         return self.predictor(x)
+    
+    def get_embeddings(self, x, edge_index, batch):
+        return self.transformer(x, edge_index, batch)
 
-class TransformerNonlinearModel(Module):
-    def __init__(self, input_dim, hidden_dim, embedding_dim, predictor_hidden_dim, output_dim):
-        super(TransformerNonlinearModel, self).__init__()
+class TransformerNonlinearRegressionModel(Module):
+    def __init__(self, input_dim, hidden_dim, embedding_dim, predictor_hidden_dim, output_dim=1):
+        super(TransformerNonlinearRegressionModel, self).__init__()
         self.transformer = TransformerModel(input_dim, hidden_dim, embedding_dim)
         self.predictor = NonlinearPredictor(embedding_dim, predictor_hidden_dim, output_dim)
+        self.embedding_size = embedding_dim 
 
     def forward(self, x, edge_index, batch):
         x = self.transformer(x, edge_index, batch)
         return self.predictor(x)
+    
+    def get_embeddings(self, x, edge_index, batch):
+        return self.transformer(x, edge_index, batch)
+
     
 
 # Combined Models for Classification
