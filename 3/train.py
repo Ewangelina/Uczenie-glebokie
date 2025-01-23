@@ -15,7 +15,6 @@ def plot_embeddings_2d(model, embeddings, labels, title="2D Embeddings Visualiza
     plt.ylabel("Embedding Dimension 2")
     plt.grid(True)
 
-    # Plot approximation function
     x_min, x_max = embeddings[:, 0].min() - 1, embeddings[:, 0].max() + 1
     y_min, y_max = embeddings[:, 1].min() - 1, embeddings[:, 1].max() + 1
     xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
@@ -38,10 +37,9 @@ def plot_embeddings_1d(model, embeddings, labels, title="1D Embeddings Visualiza
     plt.colorbar(scatter, label="Labels")
     plt.title(title)
     plt.xlabel("Embedding Value")
-    plt.yticks([])  # Hide y-axis ticks
+    plt.yticks([])
     plt.grid(True)
 
-    # Plot approximation function
     x_min, x_max = embeddings.min() - 1, embeddings.max() + 1
     x_vals = np.linspace(x_min, x_max, 100)
     x_vals_tensor = torch.tensor(x_vals, dtype=torch.float32).to(next(model.parameters()).device).view(-1, 1)
@@ -56,11 +54,10 @@ def plot_embeddings_1d(model, embeddings, labels, title="1D Embeddings Visualiza
 
     plt.show()
 
-# Training function for BACE (Binary Classification)
 def train_bace(model, train_loader, val_loader, device, num_epochs=100, lr=0.001, patience=10):
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=lr)
-    criterion = torch.nn.BCELoss()  # Binary Cross-Entropy Loss
+    criterion = torch.nn.BCELoss()
 
     best_val_loss = float('inf')
     patience_counter = 0
@@ -76,19 +73,18 @@ def train_bace(model, train_loader, val_loader, device, num_epochs=100, lr=0.001
             data = data.to(device)
             optimizer.zero_grad()
             output = model(data.x, data.edge_index, data.batch).squeeze()
-            loss = criterion(output, data.y.float().squeeze())  # Ensure target matches output size
+            loss = criterion(output, data.y.float().squeeze())
             loss.backward()
             optimizer.step()
             train_loss += loss.item() * data.num_graphs
 
         train_loss /= len(train_loader.dataset)
 
-        # Validation
         model.eval()
         val_loss = 0.0
         val_preds = []
         val_labels = []
-        embeddings = []  # Collect embeddings if size == 1 or 2
+        embeddings = []
         with torch.no_grad():
             for data in val_loader:
                 data = data.to(device)
@@ -99,7 +95,6 @@ def train_bace(model, train_loader, val_loader, device, num_epochs=100, lr=0.001
                 val_preds.extend(output.cpu().numpy())
                 val_labels.extend(data.y.cpu().numpy())
 
-                # Collect embeddings if embedding size == 1 or 2
                 if model.embedding_size in [1, 2]:
                     embedding = model.get_embeddings(data.x, data.edge_index, data.batch)
                     embeddings.extend(embedding.cpu().numpy())
@@ -128,7 +123,6 @@ def train_bace(model, train_loader, val_loader, device, num_epochs=100, lr=0.001
     if best_model_state is not None:
         model.load_state_dict(best_model_state)
 
-    # Visualize embeddings if size == 1 or 2
     if embeddings:
         embeddings = np.array(embeddings)
         labels = np.array(val_labels)
@@ -137,7 +131,6 @@ def train_bace(model, train_loader, val_loader, device, num_epochs=100, lr=0.001
         elif model.embedding_size == 1:
             plot_embeddings_1d(model, embeddings, labels, title="1D Embeddings for Validation Set", task="")
 
-    # Plot loss curves
     plt.figure(figsize=(10, 6))
     plt.plot(range(1, len(train_losses) + 1), train_losses, label="Train Loss")
     plt.plot(range(1, len(val_losses) + 1), val_losses, label="Validation Loss")
@@ -149,10 +142,10 @@ def train_bace(model, train_loader, val_loader, device, num_epochs=100, lr=0.001
     plt.show()
 
 
-def train_qm9(model, train_loader, val_loader, device, num_epochs=100, lr=0.001, patience=10):
+def train_qm9(model, train_loader, val_loader, device, num_epochs=10, lr=0.001, patience=3):
     model = model.to(device)
     optimizer = Adam(model.parameters(), lr=lr)
-    criterion = torch.nn.MSELoss()  # Mean Squared Error Loss
+    criterion = torch.nn.MSELoss()
 
     best_val_loss = float('inf')
     patience_counter = 0
@@ -167,21 +160,20 @@ def train_qm9(model, train_loader, val_loader, device, num_epochs=100, lr=0.001,
         for data in train_loader:
             data = data.to(device)
             optimizer.zero_grad()
-            output = model(data.x, data.edge_index, data.batch).squeeze()  # Ensure output is 1D tensor
+            output = model(data.x, data.edge_index, data.batch).squeeze()
             target = data.y[:, 0].float()
-            loss = criterion(output, target)  # Ensure target matches output size
+            loss = criterion(output, target)
             loss.backward()
             optimizer.step()
             train_loss += loss.item() * data.num_graphs
 
         train_loss /= len(train_loader.dataset)
 
-        # Validation
         model.eval()
         val_loss = 0.0
         val_preds = []
         val_labels = []
-        embeddings = []  # Collect embeddings if size == 1 or 2
+        embeddings = []
         with torch.no_grad():
             for data in val_loader:
                 data = data.to(device)
@@ -193,7 +185,6 @@ def train_qm9(model, train_loader, val_loader, device, num_epochs=100, lr=0.001,
                 val_preds.extend(output.cpu().numpy())
                 val_labels.extend(target.cpu().numpy())
 
-                # Collect embeddings if embedding size == 1 or 2
                 if model.embedding_size in [1, 2]:
                     embedding = model.get_embeddings(data.x, data.edge_index, data.batch)
                     embeddings.extend(embedding.cpu().numpy())
@@ -222,7 +213,6 @@ def train_qm9(model, train_loader, val_loader, device, num_epochs=100, lr=0.001,
     if best_model_state is not None:
         model.load_state_dict(best_model_state)
 
-    # Visualize embeddings if size == 1 or 2
     if embeddings:
         embeddings = np.array(embeddings)
         labels = np.array(val_labels)
@@ -231,7 +221,6 @@ def train_qm9(model, train_loader, val_loader, device, num_epochs=100, lr=0.001,
         elif model.embedding_size == 1:
             plot_embeddings_1d(model, embeddings, labels, title="1D Embeddings for Validation Set", task="regression")
 
-    # Plot loss curves
     plt.figure(figsize=(10, 6))
     plt.plot(range(1, len(train_losses) + 1), train_losses, label="Train Loss")
     plt.plot(range(1, len(val_losses) + 1), val_losses, label="Validation Loss")

@@ -13,7 +13,7 @@ class GCNModel(Module):
         self.relu = ReLU()
 
     def forward(self, x, edge_index, batch):
-        x = x.float()  # Ensure input is of type float
+        x = x.float() 
         x = self.bn1(self.relu(self.conv1(x, edge_index)))
         x = self.bn2(self.relu(self.conv2(x, edge_index)))
         x = global_max_pool(x, batch)
@@ -62,10 +62,10 @@ class NonlinearPredictor(Module):
 class LinearClassifier(Module):
     def __init__(self, embedding_dim):
         super(LinearClassifier, self).__init__()
-        self.linear = Linear(embedding_dim, 1)  # Output 1 for binary classification
+        self.linear = Linear(embedding_dim, 1)
 
     def forward(self, x):
-        return torch.sigmoid(self.linear(x))  # Apply sigmoid for binary classification
+        return torch.sigmoid(self.linear(x))
 
 # Nonlinear Classifier for Classification
 class NonlinearClassifier(Module):
@@ -86,7 +86,7 @@ class GCNLinearRegressionModel(Module):
     def __init__(self, input_dim, hidden_dim, embedding_dim, output_dim=1):
         super(GCNLinearRegressionModel, self).__init__()
         self.gcn = GCNModel(input_dim, hidden_dim, embedding_dim)
-        self.predictor = LinearPredictor(embedding_dim, output_dim)  # output_dim should be 1
+        self.predictor = LinearPredictor(embedding_dim, output_dim)
         self.embedding_size = embedding_dim 
 
     def forward(self, x, edge_index, batch):
@@ -101,7 +101,7 @@ class GCNNonlinearRegressionModel(Module):
     def __init__(self, input_dim, hidden_dim, embedding_dim, predictor_hidden_dim, output_dim=1):
         super(GCNNonlinearRegressionModel, self).__init__()
         self.gcn = GCNModel(input_dim, hidden_dim, embedding_dim)
-        self.predictor = NonlinearPredictor(embedding_dim, predictor_hidden_dim, output_dim)  # output_dim=1
+        self.predictor = NonlinearPredictor(embedding_dim, predictor_hidden_dim, output_dim)
         self.embedding_size = embedding_dim 
 
     def forward(self, x, edge_index, batch):
@@ -148,7 +148,7 @@ class GCNLinearClassifierModel(Module):
         super(GCNLinearClassifierModel, self).__init__()
         self.gcn = GCNModel(input_dim, hidden_dim, embedding_dim)
         self.classifier = LinearClassifier(embedding_dim)
-        self.embedding_size = embedding_dim  # Add this line
+        self.embedding_size = embedding_dim
 
     def forward(self, x, edge_index, batch):
         x = self.gcn(x, edge_index, batch)
@@ -158,11 +158,11 @@ class GCNLinearClassifierModel(Module):
         return self.gcn(x, edge_index, batch)
 
 class GCNNonlinearClassifierModel(Module):
-    def __init__(self, input_dim, hidden_dim, embedding_dim, classifier_hidden_dim):
+    def __init__(self, input_dim, hidden_dim, embedding_dim, mlp_hidden_dim):
         super(GCNNonlinearClassifierModel, self).__init__()
         self.gcn = GCNModel(input_dim, hidden_dim, embedding_dim)
-        self.classifier = NonlinearClassifier(embedding_dim, classifier_hidden_dim)
-        self.embedding_size = embedding_dim  # Add this line
+        self.classifier = NonlinearClassifier(embedding_dim, mlp_hidden_dim)
+        self.embedding_size = embedding_dim
 
     def forward(self, x, edge_index, batch):
         x = self.gcn(x, edge_index, batch)
@@ -176,7 +176,7 @@ class TransformerLinearClassifierModel(Module):
         super(TransformerLinearClassifierModel, self).__init__()
         self.transformer = TransformerModel(input_dim, hidden_dim, embedding_dim)
         self.classifier = LinearClassifier(embedding_dim)
-        self.embedding_size = embedding_dim  # Add this line
+        self.embedding_size = embedding_dim
 
     def forward(self, x, edge_index, batch):
         x = self.transformer(x, edge_index, batch)
@@ -186,11 +186,11 @@ class TransformerLinearClassifierModel(Module):
         return self.transformer(x, edge_index, batch)
 
 class TransformerNonlinearClassifierModel(Module):
-    def __init__(self, input_dim, hidden_dim, embedding_dim, classifier_hidden_dim):
+    def __init__(self, input_dim, hidden_dim, embedding_dim, mlp_hidden_dim):
         super(TransformerNonlinearClassifierModel, self).__init__()
         self.transformer = TransformerModel(input_dim, hidden_dim, embedding_dim)
-        self.classifier = NonlinearClassifier(embedding_dim, classifier_hidden_dim)
-        self.embedding_size = embedding_dim  # Add this line
+        self.classifier = NonlinearClassifier(embedding_dim, mlp_hidden_dim)
+        self.embedding_size = embedding_dim
 
     def forward(self, x, edge_index, batch):
         x = self.transformer(x, edge_index, batch)

@@ -9,7 +9,6 @@ from model import GCNLinearClassifierModel, GCNNonlinearClassifierModel, Transfo
 import numpy as np
 import random
 
-# Function to split dataset into training, validation, and test sets
 def split_dataset(dataset, train_ratio=0.8, val_ratio=0.1):
     num_data = len(dataset)
     indices = list(range(num_data))
@@ -32,10 +31,8 @@ def load_bace_dataset(batch_size=32):
     from torch_geometric.datasets import MoleculeNet
     bace_dataset = MoleculeNet(root='data/BACE', name='BACE', transform=ConvertToFloat())
 
-    # Split the dataset
     train_dataset, val_dataset, test_dataset = split_dataset(bace_dataset)
 
-    # Create data loaders
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
@@ -43,15 +40,12 @@ def load_bace_dataset(batch_size=32):
     print(f"BACE Dataset: {len(train_dataset)} training samples, {len(val_dataset)} validation samples, {len(test_dataset)} test samples.")
     return train_loader, val_loader, test_loader
 
-# Load the QM9 dataset (Regression task)
 def load_qm9_dataset(batch_size=32):
     print("Loading QM9 dataset...")
     qm9_dataset = QM9(root='data/QM9')
 
-    # Split the dataset
     train_dataset, val_dataset, test_dataset = split_dataset(qm9_dataset)
 
-    # Create data loaders
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
@@ -70,19 +64,16 @@ def set_seed(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-# Set the seed for reproducibility
 set_seed(42)
 
 if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Define model parameters
     hidden_dim = 64
     embedding_dim = 128
     output_dim = 1
-    classifier_hidden_dim = 32  # For nonlinear classifier
+    mlp_hidden_dim = 32
 
-    # Load datasets
     bace_train_loader, bace_val_loader, bace_test_loader = load_bace_dataset()
     bace_input_dim = 9
 
@@ -91,7 +82,7 @@ if __name__ == "__main__":
     train_bace(gcn_linear_classifier_model, bace_train_loader, bace_val_loader, device)
     test_bace(gcn_linear_classifier_model, bace_test_loader, device)
 
-    gcn_nonlinear_classifier_model = GCNNonlinearClassifierModel(bace_input_dim, hidden_dim, embedding_dim, classifier_hidden_dim)
+    gcn_nonlinear_classifier_model = GCNNonlinearClassifierModel(bace_input_dim, hidden_dim, embedding_dim, mlp_hidden_dim)
     train_bace(gcn_nonlinear_classifier_model, bace_train_loader, bace_val_loader, device)
     test_bace(gcn_nonlinear_classifier_model, bace_test_loader, device)
 
@@ -99,7 +90,7 @@ if __name__ == "__main__":
     train_bace(transformer_linear_classifier_model, bace_train_loader, bace_val_loader, device)
     test_bace(transformer_linear_classifier_model, bace_test_loader, device)
 
-    transformer_nonlinear_classifier_model = TransformerNonlinearClassifierModel(bace_input_dim, hidden_dim, embedding_dim, classifier_hidden_dim)
+    transformer_nonlinear_classifier_model = TransformerNonlinearClassifierModel(bace_input_dim, hidden_dim, embedding_dim, mlp_hidden_dim)
     train_bace(transformer_nonlinear_classifier_model, bace_train_loader, bace_val_loader, device)
     test_bace(transformer_nonlinear_classifier_model, bace_test_loader, device)
 

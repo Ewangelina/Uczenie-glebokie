@@ -23,7 +23,6 @@ def plot_embeddings_2d(model, embeddings, labels, title="2D Embeddings Visualiza
     plt.ylabel("Embedding Dimension 2")
     plt.grid(True)
 
-    # Plot approximation function
     x_min, x_max = embeddings[:, 0].min() - 1, embeddings[:, 0].max() + 1
     y_min, y_max = embeddings[:, 1].min() - 1, embeddings[:, 1].max() + 1
     xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
@@ -46,10 +45,9 @@ def plot_embeddings_1d(model, embeddings, labels, title="1D Embeddings Visualiza
     plt.colorbar(scatter, label="Labels")
     plt.title(title)
     plt.xlabel("Embedding Value")
-    plt.yticks([])  # Hide y-axis ticks
+    plt.yticks([]) 
     plt.grid(True)
 
-    # Plot approximation function
     x_min, x_max = embeddings.min() - 1, embeddings.max() + 1
     x_vals = np.linspace(x_min, x_max, 100)
     x_vals_tensor = torch.tensor(x_vals, dtype=torch.float32).to(next(model.parameters()).device).view(-1, 1)
@@ -67,23 +65,22 @@ def plot_embeddings_1d(model, embeddings, labels, title="1D Embeddings Visualiza
 def test_bace(model, test_loader, device):
     model = model.to(device)
     model.eval()
-    criterion = torch.nn.BCELoss()  # Binary Cross-Entropy Loss
+    criterion = torch.nn.BCELoss() 
 
     test_loss = 0.0
     test_preds = []
     test_labels = []
-    embeddings = []  # Collect embeddings if size == 2
+    embeddings = [] 
     with torch.no_grad():
         for data in test_loader:
             data = data.to(device)
             output = model(data.x, data.edge_index, data.batch).squeeze()
-            loss = criterion(output, data.y.view(-1).float())  # Ensure target matches input size
+            loss = criterion(output, data.y.view(-1).float()) 
             test_loss += loss.item() * data.num_graphs
 
             test_preds.extend(output.cpu().numpy())
             test_labels.extend(data.y.cpu().numpy())
 
-            # Collect embeddings if embedding size == 2
             if model.embedding_size in [1, 2]:
                 embedding = model.get_embeddings(data.x, data.edge_index, data.batch)
                 embeddings.extend(embedding.cpu().numpy())
@@ -94,7 +91,6 @@ def test_bace(model, test_loader, device):
     print(f"Test Metrics - Loss: {test_loss:.4f}, AUC: {metrics['auc']:.4f}, "
           f"Accuracy: {metrics['accuracy']:.4f}, Precision: {metrics['precision']:.4f}, Recall: {metrics['recall']:.4f}")
 
-    # Visualize embeddings if size == 2
     if embeddings:
         embeddings = np.array(embeddings)
         labels = np.array(test_labels)
@@ -109,12 +105,12 @@ def test_bace(model, test_loader, device):
 def test_qm9(model, test_loader, device):
     model = model.to(device)
     model.eval()
-    criterion = torch.nn.MSELoss()  # Mean Squared Error Loss
+    criterion = torch.nn.MSELoss()  
 
     test_loss = 0.0
     test_preds = []
     test_labels = []
-    embeddings = []  # Collect embeddings if size == 1 or 2
+    embeddings = []  
     with torch.no_grad():
         for data in test_loader:
             data = data.to(device)
@@ -126,7 +122,6 @@ def test_qm9(model, test_loader, device):
             test_preds.extend(output.cpu().numpy())
             test_labels.extend(target.cpu().numpy())
 
-            # Collect embeddings if embedding size == 1 or 2
             if model.embedding_size in [1, 2]:
                 embedding = model.get_embeddings(data.x, data.edge_index, data.batch)
                 embeddings.extend(embedding.cpu().numpy())
@@ -136,7 +131,6 @@ def test_qm9(model, test_loader, device):
 
     print(f"Test Loss: {test_loss:.4f}, Test MAE: {test_mae:.4f}")
 
-    # Visualize embeddings if size == 1 or 2
     if embeddings:
         embeddings = np.array(embeddings)
         labels = np.array(test_labels)
