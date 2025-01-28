@@ -8,6 +8,8 @@ import pickle
 
 med = MyEncoderDecoder()
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 start = datetime.datetime.now()
 outfile = str(start).replace(":", "").replace("-", "").replace(".", "")
 outfile = ".\\output\\" + outfile + ".txt"
@@ -53,8 +55,8 @@ class LSTMModel(nn.Module):
         out = self.fc(out[:, -1, :])  # Get the last time step output
         return out
 
-sl_tab = [10, 25, 50, 100, 150] 
-hs_tab = [64, 128, 256, 512]
+sl_tab = [100, 50, 25, 150, 10] 
+hs_tab = [128, 256, 512, 64]
 nl_tab = [1, 2, 3]
 
 best_best_loss = 9999999999999999
@@ -111,7 +113,7 @@ for seq_length in sl_tab: # Length of input sequence
                     i = 0
                     for sequences, targets in test_data_loader:
                         outputs = model(sequences)
-                        test_loss = criterion(outputs, targets.float()).item()
+                        test_loss = test_loss + criterion(outputs, targets.float()).item()
                         i = i + 1
                     test_loss = test_loss / i
                     writeout(f'TST Epoch {epoch}, Loss: {test_loss:.4f}')
@@ -126,7 +128,6 @@ for seq_length in sl_tab: # Length of input sequence
                     if best_best_loss > lowest_loss:
                         best_best_loss = lowest_loss
                         best_best_descr = current_model_description
-
                 else:
                     patience = patience - 1
                     if patience <= 0:

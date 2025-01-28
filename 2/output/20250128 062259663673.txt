@@ -1,0 +1,13 @@
+100-128-1---------------------
+VAL Epoch 0, Loss: 70.5841
+TST Epoch 0, Loss: 70.5847
+VAL Epoch 1, Loss: 67.9407
+TST Epoch 1, Loss: 67.9465
+VAL Epoch 2, Loss: 65.8699
+TST Epoch 2, Loss: 65.8678
+VAL Epoch 3, Loss: 64.0208
+TST Epoch 3, Loss: 64.0179
+VAL Epoch 4, Loss: 63.0173
+TST Epoch 4, Loss: 63.0235
+VAL Epoch 5, Loss: 62.0392
+TST Epoch 5, Loss: 62.0411
