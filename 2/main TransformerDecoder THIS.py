@@ -88,7 +88,7 @@ class LSTMModel(nn.Module):
         output = self.fc(tgt[:, -1, :])
         return output
 
-sl_tab = [54, 108] 
+sl_tab = [108] 
 hs_tab = [64, 128]
 nl_tab = [1, 2]
 hd_tab = [1, 2]
@@ -112,7 +112,7 @@ for seq_length in sl_tab: # Length of input sequence
                 ll_epoch = -1
 
                 # Data
-                dataset = LetterDataset(seq_length, '.\\data\\train_data.txt')
+                dataset = LetterDataset(seq_length, '.\\data\\train_data_short.txt')
                 data_loader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
                 val_dataset = LetterDataset(seq_length, '.\\data\\val_data.txt')
@@ -140,7 +140,7 @@ for seq_length in sl_tab: # Length of input sequence
                     with torch.no_grad():
                         i = 0
                         for sequences, targets in val_data_loader:
-                            outputs = model(sequences)
+                            outputs = model(sequences, memory, tgt_mask)
                             val_loss = val_loss + criterion(outputs, targets.float()).item()
                             i = i + 1
                         val_loss = val_loss / i
