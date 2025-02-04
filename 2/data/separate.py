@@ -1,7 +1,7 @@
 import json
 
 file = open('pantadeusz.txt', 'r', encoding="utf-8")
-output = open('pairs.csv', 'w', encoding="utf-8")
+output = open('pairs_single.csv', 'w', encoding="utf-8")
 
 string = ""
 correct_string = ""
@@ -13,7 +13,6 @@ for i in range(99):
         char = " "
         
     string = string + char
-    correct_string = correct_string + char
 
 while 1:
     char = file.read(1).lower()        
@@ -22,13 +21,13 @@ while 1:
     if char == "\n":
         char = " "
 
-    correct_string = correct_string[1:] + char
+    correct_string = char
 
-    out = string + ";" + correct_string + "\n"
+    out = string + "*" + correct_string + "\n"
     output.write(out)
     output.close()
-    output = open('pairs.csv', 'a', encoding="utf-8")
-    string = correct_string
+    output = open('pairs_single.csv', 'a', encoding="utf-8")
+    string = string[1:] + correct_string
     
     
 
